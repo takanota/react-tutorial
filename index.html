@@ -15,13 +15,15 @@
     <script type="text/babel">
       // To get started with this tutorial running your own code, simply remove
       // the script tag loading scripts/example.js and start writing code here.
+
 // tutorial1.js
+// tutorial9.js
 var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
         <h1>Comment List</h1>
-        <CommentList />
+        <CommentList data={this.props.data} />
         <CommentForm />
       </div>
     );
@@ -29,12 +31,22 @@ var CommentBox = React.createClass({
 });
 
 // tutorial2.js
+// tutorial10.js
 var CommentList = React.createClass({
   render: function() {
+    alert("[DEBUG] data.length: " + this.props.data.length);
+    var commentNodes = this.props.data.map(function (comment) {
+      alert("[DEBUG] id: " + comment.id
+        + ", author: " + comment.author
+        + ", text: " + comment.text);
+      <Comment author={comment.author} key={comment.id}>
+        {comment.text}
+      </Comment>
+    });
+    alert("[DEBUG] commentNodes: " + commentNodes.length);
     return (
       <div className="commentList">
-        <Comment author="Pete Hunt">This is one comment</Comment>
-        <Comment author="Jordan Walke">This is *another* comment</Comment>
+        {commentNodes}
       </div>
     );
   }
@@ -58,6 +70,9 @@ var Comment = React.createClass({
   },
 
   render: function() {
+    alert("(Comment#render) id: " + this.props.id
+      + ", author: " + this.props.author
+      + ", text: " + this.props.text);
     return (
       <div className="comment">
         <h2 className="commentAuthor">
@@ -69,8 +84,15 @@ var Comment = React.createClass({
   }
 });
 
+// tutorial8.js
+var data = [
+  { id: 1, author: "Pete Hunt", text: "This is one comment" },
+  { id: 2, author: "Jordan walke", text: "This is *another* comment" }
+];
+
+
 ReactDOM.render(
-  <CommentBox />,
+  <CommentBox data={data} />,
   document.getElementById('content')
 );
     </script>
