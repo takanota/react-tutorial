@@ -9,6 +9,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+    <script type="text/javascript">
+    function debug() {
+      var message = "";
+      for (var i = 0; i < arguments.length; ++i) {
+        message += (i == 0 ? "[DEBUG] " : " ") + arguments[i];
+      }
+      alert(message);
+    }
+ 
+    function attachEvent(target, eventName, handler) {
+      target.addEventListener(
+        eventName,
+        function (e) {
+          try {
+            debug("(" + target + "." + eventName + ")");
+            handler.call(e);
+          } catch (e) {
+            alert(e);
+          }
+        },
+        false);
+    }
+    </script>
   </head>
   <body>
     <div id="content"></div>
@@ -34,16 +57,19 @@ var CommentBox = React.createClass({
 // tutorial10.js
 var CommentList = React.createClass({
   render: function() {
-    alert("[DEBUG] data.length: " + this.props.data.length);
+    debug("(CommentList#render)",
+      "data.length:", this.props.data.length);
     var commentNodes = this.props.data.map(function (comment) {
-      alert("[DEBUG] id: " + comment.id
-        + ", author: " + comment.author
-        + ", text: " + comment.text);
+      debug("(CommentList#render data.map)",
+        "id:", comment.id,
+        ", author:", comment.author,
+        ", text:", comment.text);
       <Comment author={comment.author} key={comment.id}>
         {comment.text}
       </Comment>
     });
-    alert("[DEBUG] commentNodes: " + commentNodes.length);
+    debug("(CommentList#render)",
+      "commentNodes:", commentNodes.length);
     return (
       <div className="commentList">
         {commentNodes}
@@ -54,6 +80,7 @@ var CommentList = React.createClass({
 
 var CommentForm = React.createClass({
   render: function() {
+    debug("(CommentForm#render)");
     return (
       <div className="commentForm">
         Hello, world! I am a CommentForm.
@@ -65,14 +92,16 @@ var CommentForm = React.createClass({
 // tutorial4.js
 var Comment = React.createClass({
   rawMarkup: function() {
+    debug("(Comment#rawMarkup)");
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return { __html: rawMarkup };
   },
 
   render: function() {
-    alert("(Comment#render) id: " + this.props.id
-      + ", author: " + this.props.author
-      + ", text: " + this.props.text);
+    debug("(Comment#render)",
+      "id:", this.props.id,
+      ", author:", this.props.author,
+      ", text:", this.props.text);
     return (
       <div className="comment">
         <h2 className="commentAuthor">
@@ -95,6 +124,31 @@ ReactDOM.render(
   <CommentBox data={data} />,
   document.getElementById('content')
 );
+    </script>
+
+    <button id="viewInnerHTMLButton">view innerHTML</button>
+    <pre id="innerHTMLPane" />
+    <script type="text/javascript">
+    attachEvent(
+      window, "load",
+      function (ev) {
+        var button = document.getElementById("viewInnerHTMLButton");
+        attachEvent(
+          button, "click",
+          function (ev) {
+            var pane = document.getElementById("innerHTMLPane");
+            debug("pane: " + pane);
+            
+            while (pane.firstChild != null) {
+              pane.removeChild(pane.firstChild);
+            }
+            
+            var content = document.getElementById("content");
+            var node = document.createTextNode(content.innerHTML);
+            debug("node: " + node);        
+            pane.appendChild(node);
+          });
+      });
     </script>
   </body>
 </html>
