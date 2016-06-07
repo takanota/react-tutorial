@@ -65,7 +65,7 @@ var CommentList = React.createClass({
         "id:", comment.id,
         ", author:", comment.author,
         ", text:", comment.text);
-      <Comment author={comment.author} key={comment.id}>
+      return <Comment author={comment.author} key={comment.id}>
         {comment.text}
       </Comment>
     });
