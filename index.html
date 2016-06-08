@@ -100,9 +100,8 @@ var Comment = React.createClass({
 
   render: function() {
     debug("(Comment#render)",
-      "id:", this.props.id,
-      ", author:", this.props.author,
-      ", text:", this.props.text);
+      "props.author: ", this.props.author,
+      "props.children: ", this.props.children);
     return (
       <div className="comment">
         <h2 className="commentAuthor">
