@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-    <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
     <script type="text/javascript">
     function debug() {
@@ -42,12 +42,35 @@
 
 // tutorial1.js
 // tutorial9.js
+// tutorial12.js
+// tutorial13.js
 var CommentBox = React.createClass({
+  getInitialState: function() {
+    debug("(CommentBox#getInitialState)");
+    return { data: [] };
+  },
+  componentDidMount: function() {
+    debug("(CommentBox#componentDidMount)");
+    $.ajax({
+      url: this.props.url,
+      datatype: 'json',
+      cache: false,
+      success: function(data) {
+        debug("($.ajax#success) data: " + data);
+        this.setState({ data: data });
+      }.bind(this),
+      error: function(xhr, status, err) {
+        debug("($.ajax#error)");
+        debug(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
+    debug("(CommentBox#render)");
     return (
       <div className="commentBox">
         <h1>Comment List</h1>
-        <CommentList data={this.props.data} />
+        <CommentList data={this.state.data} />
         <CommentForm />
       </div>
     );
@@ -121,7 +144,7 @@ var data = [
 
 
 ReactDOM.render(
-  <CommentBox data={data} />,
+  <CommentBox url="/react-tutorial/server.php/api/comments" />,
   document.getElementById('content')
 );
     </script>
