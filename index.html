@@ -44,13 +44,10 @@
 // tutorial9.js
 // tutorial12.js
 // tutorial13.js
+// tutorial14.js
 var CommentBox = React.createClass({
-  getInitialState: function() {
-    debug("(CommentBox#getInitialState)");
-    return { data: [] };
-  },
-  componentDidMount: function() {
-    debug("(CommentBox#componentDidMount)");
+  loadCommentsFromServer: function() {
+    debug("(CommentBox#loadCommentsFromServer)");
     $.ajax({
       url: this.props.url,
       datatype: 'json',
@@ -64,6 +61,14 @@ var CommentBox = React.createClass({
         debug(this.props.url, status, err.toString());
       }.bind(this)
     });
+  },
+  getInitialState: function() {
+    debug("(CommentBox#getInitialState)");
+    return { data: [] };
+  },
+  componentDidMount: function() {
+    this.loadCommentsFromServer();
+    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   },
   render: function() {
     debug("(CommentBox#render)");
@@ -144,7 +149,9 @@ var data = [
 
 
 ReactDOM.render(
-  <CommentBox url="/react-tutorial/server.php/api/comments" />,
+  <CommentBox
+    url="/react-tutorial/server.php/api/comments"
+    pollInterval={2000} />,
   document.getElementById('content')
 );
     </script>
