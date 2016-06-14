@@ -107,13 +107,35 @@ var CommentList = React.createClass({
   }
 });
 
+// tutorial15.js
+// tutorial16.js
 var CommentForm = React.createClass({
+  getInitialState: function() {
+    debug("(CommentForm#getInitialState)");
+    return { author: '', text: '' };
+  },
+  handleAuthorChange: function(e) {
+    debug("(CommentForm#handleAuthorChange)");
+    this.setState({ author: e.target.value });
+  },
+  handleTextChange: function() {
+    debug("(CommentForm#handleTextChange)");
+    this.setState({ text: e.target.value });
+  },
   render: function() {
     debug("(CommentForm#render)");
     return (
-      <div className="commentForm">
-        Hello, world! I am a CommentForm.
-      </div>
+      <form className="commentForm">
+        <input type="text"
+          placeholder="Your name"
+          value={this.state.author}
+          onChange={this.handleAuthorChange} />
+        <input type="text"
+          placeholder="Say something..."
+          value={this.state.text}
+          onChange={this.handleTextChange} />
+        <input type="submit" value="Post" />
+      </form>
     );
   }
 });
@@ -151,7 +173,7 @@ var data = [
 ReactDOM.render(
   <CommentBox
     url="/react-tutorial/server.php/api/comments"
-    pollInterval={2000} />,
+    pollInterval={30000} />,
   document.getElementById('content')
 );
     </script>
