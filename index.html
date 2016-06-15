@@ -16,7 +16,12 @@
       for (var i = 0; i < arguments.length; ++i) {
         message += (i == 0 ? "[DEBUG] " : " ") + arguments[i];
       }
-      alert(message);
+
+      var logPane = document.getElementById("logPane");
+      logPane.insertBefore(
+        document.createTextNode(message + "\n"),
+        logPane.firstChild);
+//      alert(message);
     }
  
     function attachEvent(target, eventName, handler) {
@@ -202,5 +207,6 @@ ReactDOM.render(
           });
       });
     </script>
+    <pre id="logPane" />
   </body>
 </html>
