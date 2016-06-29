@@ -121,11 +121,11 @@ var CommentForm = React.createClass({
     return { author: '', text: '' };
   },
   handleAuthorChange: function(e) {
-    debug("(CommentForm#handleAuthorChange)");
+    debug("(CommentForm#handleAuthorChange) e.target.value: " + e.target.value);
     this.setState({ author: e.target.value });
   },
   handleTextChange: function(e) {
-    debug("(CommentForm#handleTextChange)");
+    debug("(CommentForm#handleTextChange) e.target.value: " + e.target.value);
     this.setState({ text: e.target.value });
   },
   handleSubmit: function(e) {
