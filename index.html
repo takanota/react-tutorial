@@ -67,6 +67,10 @@ var CommentBox = React.createClass({
       }.bind(this)
     });
   },
+  handleCommentSubmit: function(comment) {
+    debug("(CommentBox#handleCommentSubmit) comment: " + comment);
+    // TODO: submit to server
+  },
   getInitialState: function() {
     debug("(CommentBox#getInitialState)");
     return { data: [] };
@@ -81,7 +85,7 @@ var CommentBox = React.createClass({
       <div className="commentBox">
         <h1>Comment List</h1>
         <CommentList data={this.state.data} />
-        <CommentForm />
+        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
   }
@@ -137,7 +141,7 @@ var CommentForm = React.createClass({
       return;
     }
 
-    // TODO: send request to server
+    this.props.onCommentSubmit({ author: author, text: text });
     this.setState({ author: '', text: '' });
   },
   render: function() {
