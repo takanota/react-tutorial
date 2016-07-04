@@ -50,6 +50,7 @@
 // tutorial12.js
 // tutorial13.js
 // tutorial14.js
+// tutorial20.js
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     debug("(CommentBox#loadCommentsFromServer)");
@@ -69,7 +70,21 @@ var CommentBox = React.createClass({
   },
   handleCommentSubmit: function(comment) {
     debug("(CommentBox#handleCommentSubmit) comment: " + comment);
-    // TODO: submit to server
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: comment,
+      cache: false,
+      success: function(data) {
+        debug("($.ajax#success) data:", data);
+        this.setState({ data: data });
+      }.bind(this),
+      error: function(xhr, status, err) {
+        debug("($.ajax#error)");
+        debug(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   getInitialState: function() {
     debug("(CommentBox#getInitialState)");
