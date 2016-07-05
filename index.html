@@ -70,6 +70,12 @@ var CommentBox = React.createClass({
   },
   handleCommentSubmit: function(comment) {
     debug("(CommentBox#handleCommentSubmit) comment: " + comment);
+
+    var comments = this.state.data;
+    comments.id = Date.now();
+    var newComments = comments.concat([ comment ]);
+    this.setState({ data: newComments });
+
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -82,6 +88,7 @@ var CommentBox = React.createClass({
       }.bind(this),
       error: function(xhr, status, err) {
         debug("($.ajax#error)");
+        this.setState({ data: comments });
         debug(this.props.url, status, err.toString());
       }.bind(this)
     });

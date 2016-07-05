@@ -32,6 +32,12 @@ function routeRequest() {
         $comments = file_get_contents('comments.json');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            sleep(3);
+            if (strpos($_POST['text'], "error") !== FALSE) {
+                header('HTTP/1.1 500 Internal Server Error');
+                return -1;
+            }
+
             $commentsDecoded = json_decode($comments, true);
             $commentsDecoded[] = [
                 'id'      => round(microtime(true) * 1000),
